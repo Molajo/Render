@@ -1,0 +1,34 @@
+{
+    "name": "molajo/render",
+    "description": "Molajo Render Services for PHP Applications",
+    "version": "0.1.0",
+    "type": "molajo-bundle",
+    "keywords": ["render", "commonapi", "molajo"],
+    "homepage": "http://github.com/Molajo/Render",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Amy Stephen",
+            "email": "AmyStephen@molajo.org",
+            "homepage": "http://AmyStephen.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/Molajo/Render/issues",
+        "forum": "https://groups.google.com/forum/#!forum/molajo",
+        "irc": "irc://irc.freenode.org/molajo",
+        "source": "https://github.com/Molajo/Render"
+    },
+    "require": {
+        "php": ">=5.3.10",
+        "commonapi/render": "dev-master"
+    },
+    "suggest": {
+        "mustache/mustache": "Mustache Rendering",
+        "twig/twig": "Twig Rendering"
+    },
+    "autoload": {
+        "classmap": "./"
+    }
+}
