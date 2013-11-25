@@ -2,7 +2,7 @@
     "name": "molajo/render",
     "description": "Molajo Render Services for PHP Applications",
     "version": "0.1.0",
-    "type": "molajo-bundle",
+    "type": "molajo-package",
     "keywords": ["render", "commonapi", "molajo"],
     "homepage": "http://github.com/Molajo/Render",
     "license": "MIT",
@@ -22,7 +22,9 @@
     },
     "require": {
         "php": ">=5.3.10",
-        "commonapi/render": "dev-master"
+        "commonapi/render": "dev-master",
+        "twig/twig": "1.*@stable",
+        "mustache/mustache": "2.1.*"
     },
     "suggest": {
         "mustache/mustache": "Mustache Rendering",
