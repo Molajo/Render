@@ -10,7 +10,7 @@ namespace Molajo\Render\Handler;
 
 use stdClass;
 use CommonApi\Render\RenderInterface;
-use Exception\Render\RenderException;
+use CommonApi\Exception\RuntimeException;
 use CommonApi\Language\LanguageInterface;
 
 /**
@@ -67,14 +67,14 @@ class Molajito extends AbstractHandler implements RenderInterface
      *
      * @return  string
      * @since   1.0
-     * @throws  \Exception\Render\RenderException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function includeTheme($runtime_data)
     {
         if (file_exists($runtime_data->resource->theme->include_path)) {
             $file = $runtime_data->resource->theme->include_path;
         } else {
-            throw new RenderException('Render Molajito: Theme '
+            throw new RuntimeException('Render Molajito: Theme '
             . $runtime_data->resource->theme->title
             . ' not found at '
             . $runtime_data->resource->theme->path);
@@ -99,7 +99,6 @@ class Molajito extends AbstractHandler implements RenderInterface
      *
      * @return  array
      * @since   1.0
-     * @throws  \Exception\Render\RenderException
      */
     public function parseTokens($rendered_page, array $exclude_tokens = array())
     {
@@ -208,7 +207,6 @@ class Molajito extends AbstractHandler implements RenderInterface
      *
      * @return  array
      * @since   1.0
-     * @throws  \Exception\Render\RenderException
      */
     public function renderView($runtime_data, $parameters, array $query_results = array(), $model_registry = null)
     {
@@ -230,7 +228,7 @@ class Molajito extends AbstractHandler implements RenderInterface
      *
      * @return  array
      * @since   1.0
-     * @throws  \Exception\Render\RenderException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function renderPageView($runtime_data)
     {
@@ -238,7 +236,7 @@ class Molajito extends AbstractHandler implements RenderInterface
 
         if (file_exists($file)) {
         } else {
-            throw new RenderException ('Render Molajito Page - path not found: ' . $file);
+            throw new RuntimeException ('Render Molajito Page - path not found: ' . $file);
         }
 
         ob_start();
@@ -270,7 +268,7 @@ class Molajito extends AbstractHandler implements RenderInterface
      *
      * @return  string
      * @since   1.0
-     * @throws  \Exception\Render\RenderException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function renderTemplateView($runtime_data, $parameters,
         array $query_results = array(), $model_registry = null)
@@ -459,7 +457,7 @@ class Molajito extends AbstractHandler implements RenderInterface
      *
      * @return  string
      * @since   1.0
-     * @throws  \Exception\Render\RenderException
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function renderWrapView($runtime_data, array $query_results)
     {
@@ -508,7 +506,6 @@ class Molajito extends AbstractHandler implements RenderInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\Render\RenderException
      */
     public function injectRenderedOutput($token, $rendered_view, $rendered_page)
     {
