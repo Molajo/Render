@@ -67,7 +67,7 @@ class ResourcerenderingServiceProvider extends AbstractServiceProvider implement
     {
         parent::onBeforeInstantiation($dependency_instances);
 
-        $resource_map = $this->readFile(BASE_FOLDER . '/Vendor/Molajo/Resource/Files/Output/ResourceMap.json');
+        $resource_map = $this->readFile(BASE_FOLDER . '/vendor/molajo/resource/Files/Output/ResourceMap.json');
         $scheme       = $this->createScheme();
 
         $handler_instance['ThemeHandler']
@@ -166,7 +166,7 @@ class ResourcerenderingServiceProvider extends AbstractServiceProvider implement
     {
         $class = 'Molajo\\Resource\\Scheme';
 
-        $input = BASE_FOLDER . '/Vendor/Molajo/Resource/Files/Input/SchemeArray.json';
+        $input = BASE_FOLDER . '/vendor/molajo/resource/Files/Input/SchemeArray.json';
 
         try {
             $scheme = new $class ($input);

@@ -20,11 +20,11 @@ $classmap = createClassMap($base . '/vendor/commonapi/render', 'CommonApi\\Rende
 $results  = createClassMap($base . '/vendor/commonapi/exception', 'CommonApi\\Exception\\');
 $classmap = array_merge($classmap, $results);
 
-$results  = createClassMap($base . '/Handler', 'Molajo\\Render\\Handler\\');
+$results  = createClassMap($base . '/Common/Handler', 'Molajo\\Render\\Handler\\');
 $classmap = array_merge($classmap, $results);
 
-$classmap['Molajo\\Render\\Adapter']    = $base . '/Adapter.php';
-$classmap['Molajo\\Render\\Pagination'] = $base . '/Pagination.php';
+$classmap['Molajo\\Render\\Adapter']    = $base . '/Common/Adapter.php';
+$classmap['Molajo\\Render\\Pagination'] = $base . '/Common/Pagination.php';
 ksort($classmap);
 
 spl_autoload_register(
