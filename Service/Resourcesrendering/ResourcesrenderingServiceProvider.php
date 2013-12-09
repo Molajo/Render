@@ -1,12 +1,12 @@
 <?php
 /**
- * Resourcesrendering Service Provider
+ * Resourcerendering Service Provider
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Service\Resourcesrendering;
+namespace Molajo\Service\Resourcerendering;
 
 use Exception;
 use Molajo\IoC\AbstractServiceProvider;
@@ -14,14 +14,14 @@ use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
- * Resourcesrendering Service Provider
+ * Resourcerendering Service Provider
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class ResourcesrenderingServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
+class ResourcerenderingServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
 {
     /**
      * Constructor
@@ -50,7 +50,7 @@ class ResourcesrenderingServiceProvider extends AbstractServiceProvider implemen
         parent::setDependencies($reflection);
 
         $options                          = array();
-        $this->dependencies['Resources']  = $options;
+        $this->dependencies['Resource']  = $options;
         $this->dependencies['Extensions'] = $options;
 
         return $this->dependencies;
@@ -63,9 +63,9 @@ class ResourcesrenderingServiceProvider extends AbstractServiceProvider implemen
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function processFulfilledDependencies(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_instances = null)
     {
-        parent::processFulfilledDependencies($dependency_instances);
+        parent::onBeforeInstantiation($dependency_instances);
 
         $resource_map = $this->readFile(BASE_FOLDER . '/Vendor/Molajo/Resource/Files/Output/ResourceMap.json');
         $scheme       = $this->createScheme();
@@ -134,7 +134,7 @@ class ResourcesrenderingServiceProvider extends AbstractServiceProvider implemen
         $namespace_prefixes,
         $valid_file_extensions
     ) {
-        $class = 'Molajo\\Resources\\Handler\\' . $handler;
+        $class = 'Molajo\\Resource\\Handler\\' . $handler;
 
         try {
             $handler_instance = new $class (
@@ -143,14 +143,14 @@ class ResourcesrenderingServiceProvider extends AbstractServiceProvider implemen
                 $namespace_prefixes,
                 $valid_file_extensions,
                 $this->dependencies['Extensions'],
-                $this->dependencies['Resources']
+                $this->dependencies['Resource']
             );
         } catch (Exception $e) {
-            throw new RuntimeException ('Resources Handler ' . $handler
+            throw new RuntimeException ('Resource Handler ' . $handler
             . ' Exception during Instantiation: ' . $e->getMessage());
         }
 
-        $this->dependencies['Resources']->setHandlerInstance($handler, $handler_instance);
+        $this->dependencies['Resource']->setHandlerInstance($handler, $handler_instance);
 
         return $handler_instance;
     }
@@ -164,14 +164,14 @@ class ResourcesrenderingServiceProvider extends AbstractServiceProvider implemen
      */
     protected function createScheme()
     {
-        $class = 'Molajo\\Resources\\Scheme';
+        $class = 'Molajo\\Resource\\Scheme';
 
         $input = BASE_FOLDER . '/Vendor/Molajo/Resource/Files/Input/SchemeArray.json';
 
         try {
             $scheme = new $class ($input);
         } catch (Exception $e) {
-            throw new RuntimeException ('Resources Scheme ' . $class
+            throw new RuntimeException ('Resource Scheme ' . $class
             . ' Exception during Instantiation: ' . $e->getMessage());
         }
 
