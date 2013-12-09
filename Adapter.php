@@ -9,7 +9,7 @@
 namespace Molajo\Render;
 
 use CommonApi\Render\RenderInterface;
-use Exception\Render\RenderException;
+use CommonApi\Exception\RuntimeException;
 
 /**
  * Adapter for Render
@@ -63,7 +63,6 @@ class Adapter implements RenderInterface
      *
      * @return  array
      * @since   1.0
-     * @throws  \Exception\Render\RenderException
      */
     public function parseTokens($rendered_page, array $exclude_tokens = array())
     {
@@ -80,7 +79,6 @@ class Adapter implements RenderInterface
      *
      * @return  array
      * @since   1.0
-     * @throws  \Exception\Render\RenderException
      */
     public function renderView($runtime_data, $parameters, array $query_results = array(), $model_registry = null)
     {
@@ -96,7 +94,6 @@ class Adapter implements RenderInterface
      *
      * @return  $this
      * @since   1.0
-     * @throws  \Exception\Render\RenderException
      */
     public function injectRenderedOutput($token, $rendered_view, $rendered_page)
     {

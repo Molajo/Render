@@ -268,7 +268,6 @@ class Molajito extends AbstractHandler implements RenderInterface
      *
      * @return  string
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function renderTemplateView($runtime_data, $parameters,
         array $query_results = array(), $model_registry = null)
@@ -457,7 +456,6 @@ class Molajito extends AbstractHandler implements RenderInterface
      *
      * @return  string
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
      */
     protected function renderWrapView($runtime_data, array $query_results)
     {

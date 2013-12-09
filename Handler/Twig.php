@@ -12,7 +12,7 @@ use stdClass;
 use Exception;
 use Molajo\Controller\ReadController;
 use CommonApi\Render\RenderInterface;
-use Exception\Render\RenderException;
+use CommonApi\Exception\RuntimeException;
 
 /**
  * Twig Handler for Render

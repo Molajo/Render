@@ -1,32 +1,36 @@
 <?php
 /**
- * Render
+ * Bootstrap for Testing
  *
  * @package    Molajo
  * @copyright  2013 Amy Stephen. All rights reserved.
- * @license    MIT
+ * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
+include_once __DIR__ . '/CreateClassMap.php';
 
-if (substr($_SERVER['DOCUMENT_ROOT'], - 1) == '/') {
-    define('ROOT_FOLDER', $_SERVER['DOCUMENT_ROOT']);
-} else {
-    define('ROOT_FOLDER', $_SERVER['DOCUMENT_ROOT'] . '/');
+if (! defined('PHP_VERSION_ID')) {
+    $version = explode('.', phpversion());
+    define('PHP_VERSION_ID', ($version[0] * 10000 + $version[1] * 100 + $version[2]));
 }
 
-$base = substr(__DIR__, 0, strlen(__DIR__) - 5);
-define('BASE_FOLDER', $base);
+$base     = substr(__DIR__, 0, strlen(__DIR__) - 5);
+$classmap = array();
+$classmap = createClassMap($base . '/vendor/commonapi/render', 'CommonApi\\Render\\');
 
-//include BASE_FOLDER . '/Tests/Testcase1/Data.php';
+$results  = createClassMap($base . '/vendor/commonapi/exception', 'CommonApi\\Exception\\');
+$classmap = array_merge($classmap, $results);
 
-$classMap = array(
-    'Exception\\Render\\RenderException' => BASE_FOLDER . '/Exception/RenderException.php'
+$results  = createClassMap($base . '/Handler', 'Molajo\\Render\\Handler\\');
+$classmap = array_merge($classmap, $results);
 
-);
+$classmap['Molajo\\Render\\Adapter']    = $base . '/Adapter.php';
+$classmap['Molajo\\Render\\Pagination'] = $base . '/Pagination.php';
+ksort($classmap);
 
 spl_autoload_register(
-    function ($class) use ($classMap) {
-        if (array_key_exists($class, $classMap)) {
-            require_once $classMap[$class];
+    function ($class) use ($classmap) {
+        if (array_key_exists($class, $classmap)) {
+            require_once $classmap[$class];
         }
     }
 );

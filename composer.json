@@ -31,6 +31,8 @@
         "twig/twig": "Twig Rendering"
     },
     "autoload": {
-        "classmap": "./"
+        "psr-0": {
+            "Molajo\\Render": "./"
+        }
     }
 }
