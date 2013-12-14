@@ -41,7 +41,7 @@ abstract class AbstractHandler implements RenderInterface
      *
      * @param  array  $sequence
      * @param  array  $final
-     * @param  object $resources
+     * @param  object $resource
      * @param  object $extensions
      *
      * @since   1.0
