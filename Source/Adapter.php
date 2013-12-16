@@ -30,6 +30,19 @@ class Adapter implements RenderInterface
     protected $adapter = null;
 
     /**
+     * Get the current value (or default) of the specified property
+     *
+     * @param   string $key
+     *
+     * @return  mixed
+     * @since   1.0
+     */
+    public function get($key)
+    {
+        return $this->adapter->get($key);
+    }
+
+    /**
      * Class Constructor
      *
      * @param   RenderInterface $adapter
@@ -43,16 +56,18 @@ class Adapter implements RenderInterface
     }
 
     /**
-     * Render Theme and its include Page
+     * Inclusion of the Theme introduces rendered output parsed for tokens
      *
-     * @param   object $runtime_data
+     * @param   string $include_path
+     * @param   array  $options
      *
-     * @since   1.0
      * @return  string
+     * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function includeTheme($runtime_data)
+    public function includeTheme($include_path, array $options = array())
     {
-        return $this->adapter->includeTheme($runtime_data);
+        return $this->adapter->includeTheme($include_path, $options);
     }
 
     /**
@@ -72,17 +87,16 @@ class Adapter implements RenderInterface
     /**
      * Render output for tag discovered in parsing
      *
-     * @param   object      $runtime_data
-     * @param   object      $parameters
-     * @param   array       $query_results
-     * @param   null|object $model_registry
+     * @param   string $include_path
+     * @param   array  $query_results
+     * @param   array  $options
      *
      * @return  array
-     * @since   1.0
+     * @since   0.1
      */
-    public function renderView($runtime_data, $parameters, array $query_results = array(), $model_registry = null)
+    public function renderView($include_path, array $query_results = array(), array $options = array())
     {
-        return $this->adapter->renderView($runtime_data, $parameters, $query_results, $model_registry);
+        return $this->adapter->renderView($include_path, $query_results, $options);
     }
 
     /**

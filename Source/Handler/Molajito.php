@@ -24,12 +24,12 @@ use CommonApi\Language\LanguageInterface;
 class Molajito extends AbstractHandler implements RenderInterface
 {
     /**
-     * Exclude tokens from parsing (Head tokens held until end)
+     * Object containing a single row for using within View
      *
      * @var    array
      * @since  1.0
      */
-    protected $exclude_tokens = array();
+    protected $row = null;
 
     /**
      * Schedule Event - anonymous function to FrontController triggerEvent method
@@ -40,55 +40,193 @@ class Molajito extends AbstractHandler implements RenderInterface
     protected $triggerEvent;
 
     /**
-     * Language Controller
+     * Exclude tokens from parsing (Head tokens held until end)
      *
-     * @var    object  CommonApi\Language\LanguageInterface
+     * @var    array
+     * @since  1.0
+     */
+    protected $exclude_tokens = array();
+
+    /**
+     * Scheme
+     *
+     * @var    object
+     * @since  1.0
+     */
+    protected $scheme = null;
+
+    /**
+     * Resource
+     *
+     * @var    object
+     * @since  1.0
+     */
+    protected $resource = null;
+
+    /**
+     * Fieldhandler
+     *
+     * @var    object  CommonApi\Model\FieldhandlerInterface
+     * @since  1.0
+     */
+    protected $fieldhandler = null;
+
+    /**
+     * Date Controller
+     *
+     * @var    object  CommonApi\Controller\DateInterface
+     * @since  1.0
+     */
+    protected $date_controller = null;
+
+    /**
+     * Url Controller
+     *
+     * @var    object  CommonApi\Controller\UrlInterface
+     * @since  1.0
+     */
+    protected $url_controller = null;
+
+    /**
+     * Language Instance
+     *
+     * @var    object CommonApi\Language\LanguageInterface
      * @since  1.0
      */
     protected $language_controller;
 
     /**
+     * Authorisation Controller
+     *
+     * @var    object  CommonApi\Authorisation\AuthorisationInterface
+     * @since  1.0
+     */
+    protected $authorisation_controller;
+
+    /**
+     * Runtime Data
+     *
+     * @var    array
+     * @since  1.0
+     */
+    protected $runtime_data = array();
+
+    /**
+     * Parameters
+     *
+     * @var    object
+     * @since  1.0
+     */
+    protected $parameters = null;
+
+    /**
+     * Model Registry
+     *
+     * @var    object
+     * @since  1.0
+     */
+    protected $model_registry = null;
+
+    /**
+     * Query Results
+     *
+     * @var    object
+     * @since  1.0
+     */
+    protected $query_results = null;
+
+    /**
+     * View Rendered Output
+     *
+     * @var    string
+     * @since  1.0
+     */
+    protected $rendered_view = null;
+
+    /**
+     * Page Rendered Output
+     *
+     * @var    string
+     * @since  1.0
+     */
+    protected $rendered_page = null;
+
+    /**
      * Constructor
      *
-     * @since   1.0
+     * @param  string $plugin_name
+     * @param  string $event_name
+     * @param  array  $data
+     *
+     * @since  1.0
      */
     public function __construct(
         callable $triggerEvent,
-        LanguageInterface $language_controller
+        array $options = array()
     ) {
-        $this->triggerEvent        = $triggerEvent;
-        $this->language_controller = $language_controller;
+        $this->triggerEvent   = $triggerEvent;
+
+        foreach ($options as $key => $value) {
+            $this->$key = $value;
+        }
+    }
+
+    /**
+     * Get the current value (or default) of the specified property
+     *
+     * @param   string $key
+     *
+     * @return  null|mixed
+     * @since   1.0
+     */
+    public function get($key)
+    {
+        if (isset($this->$key)) {
+            return $this->$key;
+        }
+
+        return null;
     }
 
     /**
      * Inclusion of the Theme introduces rendered output parsed for tokens
      *
-     * @param object $runtime_data
+     * @param   string $this->include_path
+     * @param   array  $options
      *
      * @return  string
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function includeTheme($runtime_data)
+    public function includeTheme($include_path, array $options = array())
     {
-        if (file_exists($runtime_data->resource->theme->include_path)) {
-            $file = $runtime_data->resource->theme->include_path;
-        } else {
-            throw new RuntimeException('Render Molajito: Theme '
-            . $runtime_data->resource->theme->title
-            . ' not found at '
-            . $runtime_data->resource->theme->path);
+        if (isset($options['page_name'])) {
+            $page_name = $options['page_name'];
+            unset($options['page_name']);
         }
 
-        $row            = new stdClass();
-        $row->page_name = $runtime_data->resource->page->title;
+        if (count($options) > 0) {
+            foreach ($options as $key => $value) {
+                $this->$key = $value;
+            }
+        }
+
+        $this->include_path = $include_path;
+
+        if (file_exists($this->include_path)) {
+        } else {
+            throw new RuntimeException('Render Molajito: Theme not found at ' . $this->include_path);
+        }
+
+        $this->row            = new stdClass();
+        $this->row->page_name = $page_name;
 
         ob_start();
-        include $file;
-        $rendered_page = ob_get_contents();
+        include $this->include_path;
+        $this->rendered_page = ob_get_contents();
         ob_end_clean();
 
-        return $rendered_page;
+        return $this->rendered_page;
     }
 
     /**
@@ -100,8 +238,10 @@ class Molajito extends AbstractHandler implements RenderInterface
      * @return  array
      * @since   1.0
      */
-    public function parseTokens($rendered_page, array $exclude_tokens = array())
-    {
+    public function parseTokens(
+        $rendered_page,
+        array $exclude_tokens = array()
+    ) {
         if (count($exclude_tokens) > 0) {
             foreach ($exclude_tokens as $exclude) {
                 $this->exclude_tokens[] = trim(strtolower($exclude));
@@ -200,109 +340,100 @@ class Molajito extends AbstractHandler implements RenderInterface
     /**
      * Render output for tag discovered in parsing
      *
-     * @param   object      $runtime_data
-     * @param   object      $parameters
-     * @param   array       $query_results
-     * @param   null|object $model_registry
+     * @param   string $include_path
+     * @param   array  $query_results
+     * @param   array  $options
      *
      * @return  array
-     * @since   1.0
+     * @since   0.1
      */
-    public function renderView($runtime_data, $parameters, array $query_results = array(), $model_registry = null)
+    public function renderView($include_path, array $query_results = array(), array $options = array())
     {
-        if ($runtime_data->render->scheme == 'page') {
-            return $this->renderPageView($runtime_data);
+        foreach ($options as $key => $value) {
+            $this->$key = $value;
         }
 
-        if ($runtime_data->render->scheme == 'wrap') {
-            return $this->renderWrapView($runtime_data, $query_results);
+        $this->include_path  = $include_path;
+
+        $this->query_results = $query_results;
+
+        if ($this->scheme == 'page') {
+            return $this->renderPageView();
         }
 
-        return $this->renderTemplateView($runtime_data, $parameters, $query_results, $model_registry);
+        if ($this->scheme == 'wrap') {
+            return $this->renderWrapView();
+        }
+
+        return $this->renderTemplateView();
     }
 
     /**
      * Render Page View
      *
-     * @param   object $runtime_data
-     *
-     * @return  array
+     * @return  string
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    protected function renderPageView($runtime_data)
+    protected function renderPageView()
     {
-        $file = $runtime_data->render->extension->include_path;
-
-        if (file_exists($file)) {
+        if (file_exists($this->include_path)) {
         } else {
-            throw new RuntimeException ('Render Molajito Page - path not found: ' . $file);
+            throw new RuntimeException ('Render Molajito Page - path not found: ' . $this->include_path);
         }
 
         ob_start();
-        include $file;
+        include $this->include_path;
         $rendered_page = ob_get_contents();
         ob_end_clean();
 
-        return array(
-            'rendered_view'  => $rendered_page,
-            'runtime_data'   => $runtime_data
-        );
+        return $rendered_page;
     }
 
     /**
      * Render Template View
      *
-     * 1. Custom.phtml file - View handles processing of $query_results
+     * 1. Custom.phtml file - View handles processing of $this->query_results
      *
-     * 2. Normal - method loops thru $query_results passing in one $row at a time
+     * 2. Normal - method loops thru $this->query_results passing in one $row at a time
      *
      *      Head.phtml - first
      *      Body.phtml - each time
      *      Footer.phtml end
      *
-     * @param   object      $runtime_data
-     * @param   object      $parameters
-     * @param   array       $query_results
-     * @param   null|object $model_registry
-     *
      * @return  string
      * @since   1.0
      */
-    protected function renderTemplateView($runtime_data, $parameters,
-        array $query_results = array(), $model_registry = null)
+    protected function renderTemplateView()
     {
         /** 1. Initialisation */
         $triggerEvent = $this->triggerEvent;
 
         /** 2. Template View: Custom handles data */
-        if (file_exists($runtime_data->render->extension->include_path . '/Custom.phtml')) {
+        if (file_exists($this->include_path . '/Custom.phtml')) {
             ob_start();
-            include $runtime_data->render->extension->include_path . '/Custom.phtml';
-            $rendered_view = ob_get_contents();
+            include $this->include_path . '/Custom.phtml';
+            $this->rendered_view = ob_get_contents();
             ob_end_clean();
-            return array(
-                'rendered_view'  => $rendered_view,
-                'runtime_data'   => $runtime_data
-            );
+            return $this->rendered_view;
         }
 
         /** 3. Controller manages loop */
-        $total_rows    = count($query_results);
+        $total_rows    = count($this->query_results);
         $row_count     = 1;
         $first         = true;
         $even_or_odd   = 'odd';
-        $rendered_view = '';
+        $this->rendered_view = '';
 
-        if (count($query_results) > 0) {
+        if (count($this->query_results) > 0) {
         } else {
             return array(
-                'rendered_view'  => $rendered_view,
-                'runtime_data'   => $runtime_data
+                'rendered_view' => $this->rendered_view,
+                'runtime_data'  => $this->runtime_data
             );
         }
 
-        foreach ($query_results as $row) {
+        foreach ($this->query_results as $row) {
 
             if ($row_count == $total_rows) {
                 $last_row = 1;
@@ -310,48 +441,48 @@ class Molajito extends AbstractHandler implements RenderInterface
                 $last_row = 0;
             }
 
-            $parameters->row_count   = $row_count;
-            $parameters->even_or_odd = $even_or_odd;
-            $parameters->total_rows  = $total_rows;
-            $parameters->last_row    = $last_row;
-            $parameters->first       = $first;
+            $this->parameters->row_count   = $row_count;
+            $this->parameters->even_or_odd = $even_or_odd;
+            $this->parameters->total_rows  = $total_rows;
+            $this->parameters->last_row    = $last_row;
+            $this->parameters->first       = $first;
 
             if ($first === true) {
                 $first = false;
 
                 $trigger_results = $triggerEvent(
                     $event_name = 'onBeforeRenderViewHead',
-                    $runtime_data,
-                    $parameters,
-                    $query = null,
-                    $model_registry,
-                    $query_results = $row,
-                    $rendered_page = null,
-                    $rendered_view
+                    $this->runtime_data,
+                    $this->parameters,
+                    $this->query = null,
+                    $this->model_registry,
+                    $this->query_results = $row,
+                    $this->rendered_page = null,
+                    $this->rendered_view
                 );
 
                 foreach ($trigger_results as $key => $value) {
                     if ($key == 'runtime_data') {
-                        $runtime_data = $value;
+                        $this->runtime_data = $value;
                     } elseif ($key == 'parameters') {
-                        $parameters = $value;
+                        $this->parameters = $value;
                     } elseif ($key == 'model_registry') {
-                        $model_registry = $value;
+                        $this->model_registry = $value;
                     } elseif ($key == 'query_results') {
                         $row = $value;
                     } elseif ($key == 'rendered_view') {
-                        $rendered_view  = $value;
+                        $this->rendered_view = $value;
                     }
                 }
 
                 unset($trigger_results);
 
-                $file = $runtime_data->render->extension->include_path . '/Header.phtml';
+                $file = $this->include_path . '/Header.phtml';
 
                 if (file_exists($file)) {
                     ob_start();
                     include $file;
-                    $rendered_view .= ob_get_contents();
+                    $this->rendered_view .= ob_get_contents();
                     ob_end_clean();
                 }
             }
@@ -359,36 +490,36 @@ class Molajito extends AbstractHandler implements RenderInterface
             /** Body */
             $trigger_results = $triggerEvent(
                 $event_name = 'onBeforeRenderViewItem',
-                $runtime_data,
-                $parameters,
-                $query = null,
-                $model_registry,
-                $query_results = $row,
-                $rendered_page = null,
-                $rendered_view
+                $this->runtime_data,
+                $this->parameters,
+                $this->query = null,
+                $this->model_registry,
+                $this->query_results = $row,
+                $this->rendered_page = null,
+                $this->rendered_view
             );
 
             foreach ($trigger_results as $key => $value) {
                 if ($key == 'runtime_data') {
-                    $runtime_data = $value;
+                    $this->runtime_data = $value;
                 } elseif ($key == 'parameters') {
-                    $parameters = $value;
+                    $this->parameters = $value;
                 } elseif ($key == 'model_registry') {
-                    $model_registry = $value;
+                    $this->model_registry = $value;
                 } elseif ($key == 'query_results') {
                     $row = $value;
                 } elseif ($key == 'rendered_view') {
-                    $rendered_view  = $value;
+                    $this->rendered_view = $value;
                 }
             }
 
             unset($trigger_results);
 
-            $file = $runtime_data->render->extension->include_path . '/Body.phtml';
+            $file = $this->include_path . '/Body.phtml';
             if (file_exists($file)) {
                 ob_start();
                 include $file;
-                $rendered_view .= ob_get_contents();
+                $this->rendered_view .= ob_get_contents();
                 ob_end_clean();
             }
 
@@ -397,37 +528,37 @@ class Molajito extends AbstractHandler implements RenderInterface
 
                 $trigger_results = $triggerEvent(
                     $event_name = 'onBeforeRenderViewFooter',
-                    $runtime_data,
-                    $parameters,
-                    $query = null,
-                    $model_registry,
-                    $query_results = $row,
-                    $rendered_page = null,
-                    $rendered_view
+                    $this->runtime_data,
+                    $this->parameters,
+                    $this->query = null,
+                    $this->model_registry,
+                    $this->query_results = $row,
+                    $this->rendered_page = null,
+                    $this->rendered_view
                 );
 
                 foreach ($trigger_results as $key => $value) {
                     if ($key == 'runtime_data') {
-                        $runtime_data = $value;
+                        $this->runtime_data = $value;
                     } elseif ($key == 'parameters') {
-                        $parameters = $value;
+                        $this->parameters = $value;
                     } elseif ($key == 'model_registry') {
-                        $model_registry = $value;
+                        $this->model_registry = $value;
                     } elseif ($key == 'query_results') {
                         $row = $value;
                     } elseif ($key == 'rendered_view') {
-                        $rendered_view  = $value;
+                        $this->rendered_view = $value;
                     }
                 }
 
                 unset($trigger_results);
 
-                $file = $runtime_data->render->extension->include_path . '/Footer.phtml';
+                $file = $this->include_path . '/Footer.phtml';
 
                 if (file_exists($file)) {
                     ob_start();
                     include $file;
-                    $rendered_view .= ob_get_contents();
+                    $this->rendered_view .= ob_get_contents();
                     ob_end_clean();
                 }
             }
@@ -442,65 +573,52 @@ class Molajito extends AbstractHandler implements RenderInterface
             $first = 0;
         }
 
-        return array(
-            'rendered_view'  => $rendered_view,
-            'runtime_data'   => $runtime_data
-        );
+        return $this->rendered_view;
     }
 
     /**
      * Wrap Template Rendered Output
      *
-     * @param   object $runtime_data
-     * @param   array  $query_results contains one column $row->content
-     *
      * @return  string
      * @since   1.0
      */
-    protected function renderWrapView($runtime_data, array $query_results)
+    protected function renderWrapView()
     {
         /** Header */
-        $row             = $query_results[0];
-        $rendered_output = '';
+        $row             = $this->query_results[0];
+        $this->rendered_output = '';
 
-        $file = $runtime_data->render->extension->include_path . '/Header.phtml';
+        $file = $this->include_path . '/Header.phtml';
         if (file_exists($file)) {
             ob_start();
             include $file;
-            $rendered_output = ob_get_contents();
+            $this->rendered_output = ob_get_contents();
             ob_end_clean();
         }
 
         /** Body */
-        $file = $runtime_data->render->extension->include_path . '/Body.phtml';
+        $file = $this->include_path . '/Body.phtml';
         if (file_exists($file)) {
             ob_start();
             include $file;
-            $rendered_output .= ob_get_contents();
+            $this->rendered_output .= ob_get_contents();
             ob_end_clean();
         }
 
         /** Footer */
-        $file = $runtime_data->render->extension->include_path . '/Footer.phtml';
+        $file = $this->include_path . '/Footer.phtml';
         if (file_exists($file)) {
             ob_start();
             include $file;
-            $rendered_output .= ob_get_contents();
+            $this->rendered_output .= ob_get_contents();
             ob_end_clean();
         }
 
-        return array(
-            'rendered_view'  => $rendered_output,
-            'runtime_data'   => $runtime_data
-        );
+        return $this->rendered_output;
     }
 
     /**
      * Replace the token discovered during parsing with the associated rendered output
-     *
-     * @param   string $token
-     * @param   string $rendered_view
-     * @param   string $rendered_view
      *
      * @return  $this
      * @since   1.0
