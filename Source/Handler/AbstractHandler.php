@@ -18,39 +18,17 @@ use CommonApi\Render\RenderInterface;
  * @copyright  2013 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-abstract class AbstractHandler implements RenderInterface
+class AbstractHandler implements RenderInterface
 {
     /**
-     * Exclude tokens from parsing (Head tokens held until end)
+     * Render Output
      *
-     * @var    array
-     * @since  1.0
-     */
-    protected $exclude_tokens = array();
-
-    /**
-     * Schedule Event - anonymous function to FrontController triggerEvent method
-     *
-     * @var    callable
-     * @since  1.0
-     */
-    protected $triggerEvent;
-
-    /**
-     * Constructor
-     *
-     * @param  array  $sequence
-     * @param  array  $final
-     * @param  object $resource
-     * @param  object $extensions
-     *
+     * @return  string
      * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function __construct(
-        array $exclude_tokens = array(),
-        callable $triggerEvent = null
-    ) {
-        $this->exclude_tokens = $exclude_tokens;
-        $this->triggerEvent   = $triggerEvent;
+    public function render()
+    {
+        return '';
     }
 }
