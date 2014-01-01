@@ -63,9 +63,9 @@ class ResourcerenderingServiceProvider extends AbstractServiceProvider implement
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function onBeforeInstantiation(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_values = null)
     {
-        parent::onBeforeInstantiation($dependency_instances);
+        parent::onBeforeInstantiation($dependency_values);
 
         $filename = BASE_FOLDER . '/vendor/molajo/resource/Source/Files/Output/ResourceMap.json';
         $resource_map = $this->readFile($filename);

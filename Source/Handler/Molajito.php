@@ -201,10 +201,11 @@ class Molajito extends AbstractHandler implements RenderInterface
     }
 
     /**
-     * Render Application
+     * Render Output
      *
-     * @return  $this
+     * @return  string
      * @since   1.0
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function render()
     {
@@ -212,8 +213,7 @@ class Molajito extends AbstractHandler implements RenderInterface
         $this->getResourceExtensions();
 
         /** Step 2. Schedule onBeforeParse Event */
-        $options                 = $this->initializeOptions();
-        $options['runtime_data'] = $this->runtime_data;
+        $options = $this->initializeOptions();
         $this->scheduleEvent('onBeforeParse', $options);
 
         /** Step 3. Render Theme */
@@ -226,7 +226,6 @@ class Molajito extends AbstractHandler implements RenderInterface
 
         /** Step 5. Schedule onBeforeParseHead Event */
         $options                  = $this->initializeOptions();
-        $options['runtime_data']  = $this->runtime_data;
         $options['rendered_page'] = $this->rendered_page;
         $this->scheduleEvent('onBeforeParseHead', $options);
 
@@ -235,7 +234,6 @@ class Molajito extends AbstractHandler implements RenderInterface
 
         /** Step 7. Schedule onAfterRender Event */
         $options                  = $this->initializeOptions();
-        $options['runtime_data']  = $this->runtime_data;
         $options['rendered_page'] = $this->rendered_page;
         $this->scheduleEvent('onAfterRender', $options);
 
@@ -244,14 +242,13 @@ class Molajito extends AbstractHandler implements RenderInterface
     }
 
     /**
-     * Before Parsing
+     * Get Resource Extensions
      *
      * @return  $this
      * @since   1.0
      */
     protected function getResourceExtensions()
     {
-        /** Step 1. Get Resource Extensions */
         $runtime_data = $this->runtime_data;
 
         $runtime_data->resource->theme
@@ -326,7 +323,6 @@ class Molajito extends AbstractHandler implements RenderInterface
             continue;
         }
 
-        /** Step 12. Complete */
         return $this;
     }
 
@@ -340,7 +336,7 @@ class Molajito extends AbstractHandler implements RenderInterface
      */
     protected function renderToken($token)
     {
-//        echo 'TOKEN NAME ' . $token->name . '<br />';
+//echo 'TOKEN NAME ' . $token->name . '<br />';
 
         /** Step 1. Initialise */
         $this->rendered_view = '';
@@ -353,7 +349,6 @@ class Molajito extends AbstractHandler implements RenderInterface
 
         /** Step 4. Schedule onBeforeRenderView Event */
         $options                   = $this->initializeOptions();
-        $options['runtime_data']   = $this->runtime_data;
         $options['parameters']     = $this->parameters;
         $options['model_registry'] = $this->model_registry;
         $options['query_results']  = $this->query_results;
@@ -380,7 +375,6 @@ class Molajito extends AbstractHandler implements RenderInterface
 
         /** Step 6. Schedule onAfterRenderView Event */
         $options                   = $this->initializeOptions();
-        $options['runtime_data']   = $this->runtime_data;
         $options['parameters']     = $this->parameters;
         $options['model_registry'] = $this->model_registry;
         $options['query_results']  = $this->query_results;
@@ -728,7 +722,6 @@ class Molajito extends AbstractHandler implements RenderInterface
                 $first = false;
 
                 $options                   = $this->initializeOptions();
-                $options['runtime_data']   = $this->runtime_data;
                 $options['parameters']     = $this->parameters;
                 $options['model_registry'] = $this->model_registry;
                 $options['query_results']  = $this->row;
@@ -749,7 +742,6 @@ class Molajito extends AbstractHandler implements RenderInterface
 
             /** Body */
             $options                   = $this->initializeOptions();
-            $options['runtime_data']   = $this->runtime_data;
             $options['parameters']     = $this->parameters;
             $options['model_registry'] = $this->model_registry;
             $options['query_results']  = $this->row;
@@ -770,7 +762,6 @@ class Molajito extends AbstractHandler implements RenderInterface
             if ($last_row == 1) {
 
                 $options                   = $this->initializeOptions();
-                $options['runtime_data']   = $this->runtime_data;
                 $options['parameters']     = $this->parameters;
                 $options['model_registry'] = $this->model_registry;
                 $options['query_results']  = $this->row;
@@ -931,7 +922,7 @@ class Molajito extends AbstractHandler implements RenderInterface
     protected function initializeOptions()
     {
         $options                   = array();
-        $options['runtime_data']   = null;
+        $options['runtime_data']   = $this->runtime_data;
         $options['parameters']     = null;
         $options['query']          = null;
         $options['model_registry'] = null;

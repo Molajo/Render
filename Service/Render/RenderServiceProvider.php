@@ -67,14 +67,14 @@ class RenderServiceProvider extends AbstractServiceProvider implements ServicePr
     /**
      * Set Dependency values
      *
-     * @param   array $dependency_instances (ignored in Service Item Adapter, based in from handler)
+     * @param   array $dependency_values (ignored in Service Item Adapter, based in from handler)
      *
      * @return  $this
      * @since   1.0
      */
-    public function onBeforeInstantiation(array $dependency_instances = null)
+    public function onBeforeInstantiation(array $dependency_values = null)
     {
-        parent::onBeforeInstantiation($dependency_instances);
+        parent::onBeforeInstantiation($dependency_values);
 
         $exclude_tokens = array();
         $x              = $this->dependencies['Resource']
