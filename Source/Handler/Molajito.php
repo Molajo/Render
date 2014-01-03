@@ -4,7 +4,7 @@
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2013 Amy Stephen. All rights reserved.
+ * @copyright  2014 Amy Stephen. All rights reserved.
  */
 namespace Molajo\Render\Handler;
 
@@ -22,7 +22,7 @@ use CommonApi\Authorisation\AuthorisationInterface;
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2013 Amy Stephen. All rights reserved.
+ * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
 class Molajito extends AbstractHandler implements RenderInterface
@@ -351,9 +351,10 @@ class Molajito extends AbstractHandler implements RenderInterface
         $options                   = $this->initializeOptions();
         $options['parameters']     = $this->parameters;
         $options['model_registry'] = $this->model_registry;
-        $options['query_results']  = $this->query_results;
+        $options['row']            = $this->row;
         $options['rendered_view']  = $this->rendered_view;
         $options['rendered_page']  = $this->rendered_page;
+
         $this->scheduleEvent('onBeforeRenderView', $options);
 
         /** Step 5. Render View */
@@ -377,7 +378,7 @@ class Molajito extends AbstractHandler implements RenderInterface
         $options                   = $this->initializeOptions();
         $options['parameters']     = $this->parameters;
         $options['model_registry'] = $this->model_registry;
-        $options['query_results']  = $this->query_results;
+        $options['row']            = $this->row;
         $options['rendered_view']  = $this->rendered_view;
         $options['rendered_page']  = $this->rendered_page;
 
@@ -385,6 +386,7 @@ class Molajito extends AbstractHandler implements RenderInterface
 
         /** Step 7. Inject Rendered Output */
         $this->rendered_page = str_replace($token->replace_this, $this->rendered_view, $this->rendered_page);
+        //echo $this->rendered_page;
 
         return $this;
     }
@@ -426,7 +428,7 @@ class Molajito extends AbstractHandler implements RenderInterface
      * @return  array
      * @since   1.0
      */
-    protected function getData()
+    protected function getData($token)
     {
         $query_results  = array();
         $model_registry = array();
@@ -501,6 +503,14 @@ class Molajito extends AbstractHandler implements RenderInterface
             $query_results = array($query_results);
         }
 
+        if ($token->name === 'alerts') {
+            echo $runtime_data->render->extension->parameters->model_type . '<br />';
+            echo $runtime_data->render->extension->parameters->model_name . '<br />';
+            echo '<pre>';
+            var_dump($query_results);
+            var_dump($model_registry);
+            var_dump($parameters);
+        }
         $this->query_results  = $query_results;
         $this->model_registry = $model_registry;
         $this->parameters     = $parameters;
@@ -669,11 +679,11 @@ class Molajito extends AbstractHandler implements RenderInterface
      *
      * 1. Custom.phtml file - View handles processing of $this->query_results
      *
-     * 2. Normal - method loops thru $this->query_results passing in one $row at a time
+     * 2. Normal - method loops thru $this->query_results passing in one $this->row at a time
      *
-     *      Head.phtml - first
-     *      Body.phtml - each time
-     *      Footer.phtml end
+     *      Head.phtml - first $this->row
+     *      Body.phtml - each $this->row
+     *      Footer.phtml - last $this->row
      *
      * @return  $this
      * @since   1.0
@@ -724,7 +734,7 @@ class Molajito extends AbstractHandler implements RenderInterface
                 $options                   = $this->initializeOptions();
                 $options['parameters']     = $this->parameters;
                 $options['model_registry'] = $this->model_registry;
-                $options['query_results']  = $this->row;
+                $options['row']            = $this->row;
                 $options['rendered_view']  = $this->rendered_view;
                 $options['rendered_page']  = $this->rendered_page;
 
@@ -744,7 +754,7 @@ class Molajito extends AbstractHandler implements RenderInterface
             $options                   = $this->initializeOptions();
             $options['parameters']     = $this->parameters;
             $options['model_registry'] = $this->model_registry;
-            $options['query_results']  = $this->row;
+            $options['row']            = $this->row;
             $options['rendered_view']  = $this->rendered_view;
             $options['rendered_page']  = $this->rendered_page;
 
@@ -764,7 +774,7 @@ class Molajito extends AbstractHandler implements RenderInterface
                 $options                   = $this->initializeOptions();
                 $options['parameters']     = $this->parameters;
                 $options['model_registry'] = $this->model_registry;
-                $options['query_results']  = $this->row;
+                $options['row']            = $this->row;
                 $options['rendered_view']  = $this->rendered_view;
                 $options['rendered_page']  = $this->rendered_page;
 
@@ -926,7 +936,7 @@ class Molajito extends AbstractHandler implements RenderInterface
         $options['parameters']     = null;
         $options['query']          = null;
         $options['model_registry'] = null;
-        $options['query_results']  = null;
+        $options['row']            = null;
         $options['rendered_view']  = null;
         $options['rendered_page']  = null;
 
@@ -962,17 +972,13 @@ class Molajito extends AbstractHandler implements RenderInterface
             } elseif ($key == 'model_registry') {
                 $this->model_registry = $value;
 
-            } elseif ($key == 'query_results') {
-                $query_results = $value;
-                if (is_array($query_results)) {
+            } elseif ($key == 'row') {
+                $row = $value;
+                if (is_object($row)) {
                 } else {
-                    if ($query_results === null || trim($query_results) == '') {
-                        $query_results = array();
-                    } else {
-                        $query_results = array($query_results);
-                    }
+                    $row = new stdClass();
                 }
-                $this->row = $query_results;
+                $this->row = $row;
 
             } elseif ($key == 'rendered_page') {
                 $this->rendered_page = $value;

@@ -4,7 +4,7 @@
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2013 Amy Stephen. All rights reserved.
+ * @copyright  2014 Amy Stephen. All rights reserved.
  */
 namespace Molajo\Service\Resourcerendering;
 
@@ -18,7 +18,7 @@ use CommonApi\Exception\RuntimeException;
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2013 Amy Stephen. All rights reserved.
+ * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
 class ResourcerenderingServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
@@ -50,7 +50,7 @@ class ResourcerenderingServiceProvider extends AbstractServiceProvider implement
         parent::setDependencies($reflection);
 
         $options                          = array();
-        $this->dependencies['Resource']  = $options;
+        $this->dependencies['Resource']   = $options;
         $this->dependencies['Extensions'] = $options;
 
         return $this->dependencies;
@@ -67,7 +67,7 @@ class ResourcerenderingServiceProvider extends AbstractServiceProvider implement
     {
         parent::onBeforeInstantiation($dependency_values);
 
-        $filename = BASE_FOLDER . '/vendor/molajo/resource/Source/Files/Output/ResourceMap.json';
+        $filename     = BASE_FOLDER . '/vendor/molajo/resource/Source/Files/Output/ResourceMap.json';
         $resource_map = $this->readFile($filename);
         $scheme       = $this->createScheme();
 
