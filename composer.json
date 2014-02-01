@@ -1,10 +1,10 @@
 {
-    "name": "molajo/render",
-    "description": "Molajo Render Services for PHP Applications",
+    "name": "molajito/render",
+    "description": "Molajito Rendering for PHP Applications",
     "version": "0.1.0",
     "type": "molajo-package",
-    "keywords": ["render", "commonapi", "molajo"],
-    "homepage": "http://github.com/Molajo/Render",
+    "keywords": ["render", "commonapi", "molajo", "molajito"],
+    "homepage": "http://github.com/Molajo/Molajito",
     "license": "MIT",
     "authors": [
         {
@@ -15,24 +15,18 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/Molajo/Render/issues",
+        "issues": "https://github.com/Molajo/Molajito/issues",
         "forum": "https://groups.google.com/forum/#!forum/molajo",
         "irc": "irc://irc.freenode.org/molajo",
-        "source": "https://github.com/Molajo/Render"
+        "source": "https://github.com/Molajo/Molajito"
     },
     "require": {
-        "php": ">=5.3.10",
-        "commonapi/render": "dev-master",
-        "twig/twig": "1.*@stable",
-        "mustache/mustache": "2.1.*"
-    },
-    "suggest": {
-        "mustache/mustache": "Mustache Rendering",
-        "twig/twig": "Twig Rendering"
+        "php": ">=5.4",
+        "commonapi/render": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "Molajo\\Render": "./"
+        "psr-4": {
+            "Molajito": "./"
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Molajito Test
+ * Pagination Test
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
@@ -9,7 +9,7 @@
 namespace Molajo\Molajito\Test;
 
 /**
- * Molajito Test
+ * Pagination Test
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License

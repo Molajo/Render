@@ -112,7 +112,7 @@ class RenderServiceProvider extends AbstractServiceProvider implements ServicePr
     }
 
     /**
-     * Get Filesystem Adapter, inject with specific Filesystem Adapter Handler
+     * Get Pagination Handler
      *
      * @param   object $handler
      *
@@ -122,19 +122,41 @@ class RenderServiceProvider extends AbstractServiceProvider implements ServicePr
      */
     protected function getAdapterHandler()
     {
-        $class = 'Molajo\\Render\\Handler\\Molajito';
+        $class = 'Molajo\\Render\\Handler\\Pagination';
+
+        $additional_rendering_properties = array(
+            'runtime_data',
+            'parameters',
+            'query',
+            'model_registry',
+            'row',
+            'include_path'
+        );
+
+        $event_option_keys                   = array(
+            'runtime_data',
+            'parameters',
+            'query',
+            'model_registry',
+            'row',
+            'rendered_view',
+            'rendered_page'
+        );
+        $options                             = array();
+        $options['fieldhandler']             = $this->dependencies['Fieldhandler'];
+        $options['date_controller']          = $this->dependencies['Date'];
+        $options['url_controller']           = $this->dependencies['Url'];
+        $options['language_controller']      = $this->dependencies['Language'];
+        $options['authorisation_controller'] = $this->dependencies['Authorisation'];
 
         try {
             return new $class (
-                $this->dependencies['Fieldhandler'],
-                $this->dependencies['Date'],
-                $this->dependencies['Url'],
-                $this->dependencies['Language'],
-                $this->dependencies['Authorisation'],
                 $this->dependencies['Resource'],
                 $this->dependencies['Runtimedata'],
                 $this->dependencies['Eventcallback'],
-                $this->dependencies['ExcludeTokens']
+                $this->dependencies['ExcludeTokens'],
+                $options,
+                $additional_rendering_properties
             );
         } catch (Exception $e) {
             throw new RuntimeException
