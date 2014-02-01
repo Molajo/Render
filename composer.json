@@ -1,10 +1,10 @@
 {
-    "name": "molajito/render",
-    "description": "Molajito Rendering for PHP Applications",
-    "version": "0.1.0",
+    "name": "molajo/render",
+    "description": "Molajo Rendering for PHP Applications",
+    "version": "0.2.0",
     "type": "molajo-package",
-    "keywords": ["render", "commonapi", "molajo", "molajito"],
-    "homepage": "http://github.com/Molajo/Molajito",
+    "keywords": ["render", "commonapi", "molajo"],
+    "homepage": "http://github.com/Molajo/Render",
     "license": "MIT",
     "authors": [
         {
@@ -15,10 +15,10 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/Molajo/Molajito/issues",
+        "issues": "https://github.com/Molajo/Render/issues",
         "forum": "https://groups.google.com/forum/#!forum/molajo",
         "irc": "irc://irc.freenode.org/molajo",
-        "source": "https://github.com/Molajo/Molajito"
+        "source": "https://github.com/Molajo/Render"
     },
     "require": {
         "php": ">=5.4",
@@ -26,7 +26,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Molajito": "./"
+            "Molajo\\Render\\": "Source/",
+            "Molajo\\Service\\": "Service/"
         }
     }
 }
