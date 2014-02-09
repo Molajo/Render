@@ -21,6 +21,27 @@ use CommonApi\Render\RenderInterface;
 class AbstractHandler implements RenderInterface
 {
     /**
+     * Render Handler
+     *
+     * @var     object  CommonApi\Render\RenderInterface
+     * @since  1.0
+     */
+    protected $renderer = null;
+
+    /**
+     * Constructor
+     *
+     * @param  $renderer  RenderInterface
+     *
+     * @since  1.0
+     */
+    public function __construct(
+        RenderInterface $renderer
+    ) {
+        $this->renderer = $renderer;
+    }
+
+    /**
      * Render Output
      *
      * @return  string
@@ -29,6 +50,6 @@ class AbstractHandler implements RenderInterface
      */
     public function render()
     {
-        return '';
+        return $this->renderer->render();
     }
 }
