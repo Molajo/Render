@@ -29,5 +29,11 @@
             "Molajo\\Render\\": "Source/",
             "Molajo\\Service\\": "Service/"
         }
-    }
+    },
+
+    "archive": {
+        "exclude": ["/.dev"]
+    },
+
+    "minimum-stability": "dev"
 }
