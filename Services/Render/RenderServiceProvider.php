@@ -6,7 +6,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Service\Render;
+namespace Molajo\Services\Render;
 
 use Exception;
 use Molajo\IoC\AbstractServiceProvider;
