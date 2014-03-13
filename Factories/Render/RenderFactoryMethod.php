@@ -1,27 +1,28 @@
 <?php
 /**
- * Render Service Provider
+ * Render Factory Method
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Services\Render;
+namespace Molajo\Factories\Render;
 
 use Exception;
-use Molajo\IoC\AbstractServiceProvider;
-use CommonApi\IoC\ServiceProviderInterface;
 use CommonApi\Exception\RuntimeException;
+use CommonApi\IoC\FactoryMethodInterface;
+use CommonApi\IoC\FactoryMethodBatchSchedulingInterface;
+use Molajo\IoC\FactoryBase;
 
 /**
- * Render Service Provider
+ * Render Factory Method
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class RenderServiceProvider extends AbstractServiceProvider implements ServiceProviderInterface
+class RenderFactoryMethod extends FactoryBase implements FactoryMethodInterface, FactoryMethodBatchSchedulingInterface
 {
     /**
      * Constructor
@@ -32,15 +33,15 @@ class RenderServiceProvider extends AbstractServiceProvider implements ServicePr
      */
     public function __construct(array $options = array())
     {
-        $options['service_name']             = basename(__DIR__);
+        $options['product_name']             = basename(__DIR__);
         $options['store_instance_indicator'] = true;
-        $options['service_namespace']        = 'Molajo\\Render\\Adapter';
+        $options['product_namespace']        = 'Molajo\\Render\\Adapter';
 
         parent::__construct($options);
     }
 
     /**
-     * Instantiate a new handler and inject it into the Adapter for the ServiceProviderInterface
+     * Instantiate a new handler and inject it into the Adapter for the FactoryMethodInterface
      * Retrieve a list of Interface dependencies and return the data ot the controller.
      *
      * @return  array
@@ -64,12 +65,12 @@ class RenderServiceProvider extends AbstractServiceProvider implements ServicePr
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException;
      */
-    public function instantiateService()
+    public function instantiateClass()
     {
-        $class = $this->service_namespace;
+        $class = $this->product_namespace;
 
         try {
-            $this->service_instance = new $class($this->getMolajitoHandler());
+            $this->product_result = new $class($this->getMolajitoHandler());
 
         } catch (Exception $e) {
             throw new RuntimeException
