@@ -1,27 +1,27 @@
 <?php
 /**
- * Abstract Render Handler
+ * Abstract Render Adapter
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Render\Handler;
+namespace Molajo\Render\Adapter;
 
 use CommonApi\Render\RenderInterface;
 
 /**
- * Abstract Render Handler
+ * Abstract Render Adapter
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class AbstractHandler implements RenderInterface
+class AbstractAdapter implements RenderInterface
 {
     /**
-     * Render Handler
+     * Render Adapter
      *
      * @var     object  CommonApi\Render\RenderInterface
      * @since  1.0

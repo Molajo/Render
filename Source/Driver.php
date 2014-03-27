@@ -1,6 +1,6 @@
 <?php
 /**
- * Adapter for Render Handlers
+ * Render Driver
  *
  * @package    Molajo
  * @copyright  2014 Amy Stephen. All rights reserved.
@@ -12,34 +12,34 @@ use CommonApi\Render\RenderInterface;
 use CommonApi\Exception\RuntimeException;
 
 /**
- * Adapter for Render Handlers
+ * Adapter for Render Adapters
  *
  * @package    Molajo
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @since      1.0
  */
-class Adapter
+class Driver implements RenderInterface
 {
     /**
-     * Render Handler
+     * Render Adapter
      *
      * @var     object  CommonApi\Render\RenderInterface
      * @since  1.0
      */
-    protected $render_handler = null;
+    protected $render_adapter = null;
 
     /**
      * Class Constructor
      *
-     * @param   RenderInterface $render_handler
+     * @param   RenderInterface $render_adapter
      *
      * @since   1.0
      */
     public function __construct(
-        RenderInterface $render_handler
+        RenderInterface $render_adapter
     ) {
-        $this->render_handler = $render_handler;
+        $this->render_adapter = $render_adapter;
     }
 
     /**
@@ -51,6 +51,6 @@ class Adapter
      */
     public function render()
     {
-        return $this->render_handler->render();
+        return $this->render_adapter->render();
     }
 }

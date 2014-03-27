@@ -1,24 +1,27 @@
 <?php
 /**
- * Molajito Render Handler
+ * Twig Adapter for Render
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Render\Handler;
+namespace Molajo\Render\Adapter;
 
+use stdClass;
+use Exception;
+use Molajo\Controller\ReadController;
 use CommonApi\Render\RenderInterface;
+use CommonApi\Exception\RuntimeException;
 
 /**
- * Abstract Render Handler
+ * Twig Adapter for Render
  *
- * @author     Amy Stephen
+ * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class Molajito extends AbstractHandler implements RenderInterface
+class Twig
 {
-
 }
