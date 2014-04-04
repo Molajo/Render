@@ -1,6 +1,6 @@
 <?php
 /**
- * Render Driver
+ * Proxy Class for Render Engine Adapters
  *
  * @package    Molajo
  * @copyright  2014 Amy Stephen. All rights reserved.
@@ -10,9 +10,10 @@ namespace Molajo\Render;
 
 use CommonApi\Render\RenderInterface;
 use CommonApi\Exception\RuntimeException;
+use Exception;
 
 /**
- * Adapter for Render Adapters
+ * Proxy Class for Render Engine Adapters
  *
  * @package    Molajo
  * @copyright  2014 Amy Stephen. All rights reserved.
@@ -32,7 +33,7 @@ class Driver implements RenderInterface
     /**
      * Class Constructor
      *
-     * @param   RenderInterface $render_adapter
+     * @param   RenderInterface  $render_adapter
      *
      * @since   1.0
      */
@@ -40,17 +41,28 @@ class Driver implements RenderInterface
         RenderInterface $render_adapter
     ) {
         $this->render_adapter = $render_adapter;
+
+        return $this;
     }
 
     /**
-     * Inclusion of the Theme introduces rendered output parsed for tokens
+     * Render output for specified view and data
+     *
+     * @param   string $include_file
+     * @param   array  $data
      *
      * @return  string
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function render()
+    public function render($include_file, array $data = array())
     {
-        return $this->render_adapter->render();
+        try {
+            return $this->render_adapter->render($include_file, $data);
+
+        } catch (Exception $e) {
+            throw new RuntimeException
+            ('Render Driver render Method Failed: ' . $e->getMessage());
+        }
     }
 }

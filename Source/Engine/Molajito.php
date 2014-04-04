@@ -1,28 +1,24 @@
 <?php
 /**
- * Mustache Adapter for Render
+ * Molajito Render Adapter
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Render\Adapter;
+namespace Molajo\Render\Engine;
 
-use stdClass;
-use Exception;
-use Molajo\Controller\ReadController;
 use CommonApi\Render\RenderInterface;
-use CommonApi\Exception\RuntimeException;
 
 /**
- * Mustache Adapter for Render
+ * Molajito Render Adapter
  *
- * @package    Molajo
+ * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class Mustache
+class Molajito extends AbstractAdapter implements RenderInterface
 {
 
 }

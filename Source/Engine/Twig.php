@@ -1,24 +1,23 @@
 <?php
 /**
- * Molajito Render Adapter
+ * Twig Render Adapter
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Render\Adapter;
+namespace Molajo\Render\Engine;
 
 use CommonApi\Render\RenderInterface;
 
 /**
- * Abstract Render Adapter
+ * Twig Adapter for Render
  *
- * @author     Amy Stephen
+ * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0
  */
-class Molajito extends AbstractAdapter implements RenderInterface
+class Twig extends AbstractAdapter implements RenderInterface
 {
-
 }

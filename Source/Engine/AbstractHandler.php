@@ -6,7 +6,7 @@
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Render\Adapter;
+namespace Molajo\Render\Engine;
 
 use CommonApi\Render\RenderInterface;
 
@@ -21,12 +21,12 @@ use CommonApi\Render\RenderInterface;
 class AbstractAdapter implements RenderInterface
 {
     /**
-     * Render Adapter
+     * Render Engine
      *
-     * @var     object  CommonApi\Render\RenderInterface
+     * @var    object  CommonApi\Render\RenderInterface
      * @since  1.0
      */
-    protected $renderer = null;
+    protected $render_adapter = null;
 
     /**
      * Constructor
@@ -36,20 +36,22 @@ class AbstractAdapter implements RenderInterface
      * @since  1.0
      */
     public function __construct(
-        RenderInterface $renderer
+        RenderInterface $render_adapter
     ) {
-        $this->renderer = $renderer;
+        $this->render_adapter = $render_adapter;
     }
 
     /**
-     * Render Output
+     * Render output for specified file and data
+     *
+     * @param   string $include_file
+     * @param   array  $data
      *
      * @return  string
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function render()
+    public function render($include_file, array $data = array())
     {
-        return $this->renderer->render();
+        return $this->render_adapter->render($include_file, $data);
     }
 }

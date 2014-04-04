@@ -49,9 +49,8 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      */
     public function setDependencies(array $reflection = null)
     {
-        $this->reflection   = array();
-        $this->dependencies = array();
-
+        $this->reflection               = array();
+        $this->dependencies             = array();
         $this->dependencies['Molajito'] = array();
 
         return $this->dependencies;
@@ -66,6 +65,8 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      */
     public function instantiateClass()
     {
+        $adapter = $this->getMolajitoAdapter();
+
         $class = $this->product_namespace;
 
         try {
@@ -88,7 +89,7 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      */
     public function getMolajitoAdapter()
     {
-        $class = 'Molajo\\Render\\Adapter\\Molajito';
+        $class = 'Molajo\\Render\\Engine\\Molajito';
 
         try {
             return new $class($this->dependencies['Molajito']);
