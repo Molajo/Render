@@ -45,7 +45,7 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      *
      * @return  array
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = null)
     {
@@ -61,7 +61,7 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      *
      * @return  $this
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
     {
@@ -70,7 +70,7 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
         $class = $this->product_namespace;
 
         try {
-            $this->product_result = new $class($this->getMolajitoAdapter());
+            $this->product_result = new $class($adapter);
 
         } catch (Exception $e) {
             throw new RuntimeException
@@ -85,7 +85,7 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      *
      * @return  $this
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException;
+     * @throws  \CommonApi\Exception\RuntimeException
      */
     public function getMolajitoAdapter()
     {
