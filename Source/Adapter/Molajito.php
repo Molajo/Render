@@ -1,24 +1,24 @@
 <?php
 /**
- * Mustache Render Adapter
+ * Molajito Render Adapter
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  */
-namespace Molajo\Render\Engine;
+namespace Molajo\Render\Adapter;
 
 use CommonApi\Render\RenderInterface;
 
 /**
- * Mustache Render Adapter
+ * Molajito Render Adapter
  *
- * @package    Molajo
+ * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @copyright  2014 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-class Mustache extends AbstractAdapter implements RenderInterface
+class Molajito extends AbstractAdapter implements RenderInterface
 {
 
 }

@@ -89,7 +89,7 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      */
     public function getMolajitoAdapter()
     {
-        $class = 'Molajo\\Render\\Engine\\Molajito';
+        $class = 'Molajo\\Render\\Adapter\\Molajito';
 
         try {
             return new $class($this->dependencies['Molajito']);
