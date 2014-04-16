@@ -31,7 +31,7 @@ class AbstractAdapter implements RenderInterface
     /**
      * Constructor
      *
-     * @param  $renderer  RenderInterface
+     * @param  $render_adapter  RenderInterface
      *
      * @since  1.0
      */

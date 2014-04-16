@@ -15,15 +15,15 @@ if (! defined('PHP_VERSION_ID')) {
 
 $base     = substr(__DIR__, 0, strlen(__DIR__) - 5);
 $classmap = array();
-$classmap = createClassMap($base . '/vendor/commonapi/render', 'CommonApi\\Render\\');
+$classmap = createClassMap($base . '/vendor/commonapi/render/', 'CommonApi\\Render\\');
 
-$results  = createClassMap($base . '/vendor/commonapi/exception', 'CommonApi\\Exception\\');
+$results  = createClassMap($base . '/vendor/commonapi/exception/', 'CommonApi\\Exception\\');
 $classmap = array_merge($classmap, $results);
 
-$results  = createClassMap($base . '/Common/Adapter', 'Molajo\\Render\\Adapter\\');
+$results  = createClassMap($base . '/Source/Adapter/', 'Molajo\\Render\\Adapter\\');
 $classmap = array_merge($classmap, $results);
 
-$classmap['Molajo\\Render\\Driver'] = $base . '/Common/Driver.php';
+$classmap['Molajo\\Render\\Driver'] = $base . '/Source/Driver.php';
 ksort($classmap);
 
 spl_autoload_register(

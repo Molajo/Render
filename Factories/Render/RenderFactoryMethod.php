@@ -41,7 +41,7 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
     }
 
     /**
-     * Instantiate a new adapter and inject it into the Adapter for the FactoryInterface     * Retrieve a list of Interface dependencies and return the data ot the controller.
+     * Instantiate a new adapter and inject it into the Adapter for the FactoryInterface
      *
      * @return  array
      * @since   1.0
@@ -74,7 +74,9 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
 
         } catch (Exception $e) {
             throw new RuntimeException
-            ('Render: Could not instantiate Adapter: ' . $class);
+            (
+                'Render: Could not instantiate Adapter: ' . $class
+            );
         }
 
         return $this;
@@ -96,7 +98,9 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
 
         } catch (Exception $e) {
             throw new RuntimeException
-            ('Render: Could not instantiate Molajito Adapter: ' . $class);
+            (
+                'Render: Could not instantiate Molajito Adapter: ' . $class
+            );
         }
     }
 }
