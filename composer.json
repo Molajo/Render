@@ -24,6 +24,11 @@
         "php": ">=5.4",
         "commonapi/render": "dev-master"
     },
+    "recommend": {
+        "molajo/molajito": "dev-master",
+        "mustache/mustache": "~2.0",
+        "twig/twig": "~1.0"
+    },
     "autoload": {
         "psr-4": {
             "Molajo\\Render\\": "Source/",
