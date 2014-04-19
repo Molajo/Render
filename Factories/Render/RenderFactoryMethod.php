@@ -49,9 +49,12 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      */
     public function setDependencies(array $reflection = null)
     {
-        $this->reflection               = array();
-        $this->dependencies             = array();
-        $this->dependencies['Molajito'] = array();
+        $this->reflection     = array();
+        $this->dependencies   = array();
+        $options              = array();
+        $options['base_path'] = $this->options['base_path'];
+
+        $this->dependencies['Molajito'] = $options;
 
         return $this->dependencies;
     }
