@@ -37,7 +37,7 @@ class MolajitoTest extends \PHPUnit_Framework_TestCase
 
         $file  = __DIR__ . '/RenderTest.php';
         $data  = array();
-        $stuff = $instance->render($file, $data);
+        $stuff = $instance->renderOutput($file, $data);
         $this->assertEquals('stuff', $stuff);
 
         return $this;
@@ -55,7 +55,7 @@ class MolajitoTest extends \PHPUnit_Framework_TestCase
 
         $file  = __DIR__ . '/RenderTest.php';
         $data  = array();
-        $stuff = $instance->render($file, $data);
+        $stuff = $instance->renderOutput($file, $data);
         $this->assertEquals('stuff', $stuff);
 
         return $this;
@@ -73,7 +73,7 @@ class MolajitoTest extends \PHPUnit_Framework_TestCase
 
         $file  = __DIR__ . '/RenderTest.php';
         $data  = array();
-        $stuff = $instance->render($file, $data);
+        $stuff = $instance->renderOutput($file, $data);
         $this->assertEquals('stuff', $stuff);
 
         return $this;
@@ -85,13 +85,13 @@ class MockRender implements RenderInterface
     /**
      * Render output for specified file and data
      *
-     * @param   string $include_file
+     * @param   string $include_path
      * @param   array  $data
      *
      * @return  string
      * @since   1.0
      */
-    public function render($include_file, array $data = array())
+    public function renderOutput($include_path, array $data = array())
     {
         return 'stuff';
     }

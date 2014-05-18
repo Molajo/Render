@@ -44,14 +44,14 @@ class AbstractAdapter implements RenderInterface
     /**
      * Render output for specified file and data
      *
-     * @param   string $include_file
+     * @param   string $include_path
      * @param   array  $data
      *
      * @return  string
      * @since   1.0
      */
-    public function render($include_file, array $data = array())
+    public function renderOutput($include_path, array $data = array())
     {
-        return $this->render_adapter->render($include_file, $data);
+        return $this->render_adapter->renderOutput($include_path, $data);
     }
 }

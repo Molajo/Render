@@ -25,7 +25,7 @@ class Driver implements RenderInterface
     /**
      * Render Adapter
      *
-     * @var     object  CommonApi\Render\RenderInterface
+     * @var    object  CommonApi\Render\RenderInterface
      * @since  1.0
      */
     protected $render_adapter = null;
@@ -33,9 +33,9 @@ class Driver implements RenderInterface
     /**
      * Class Constructor
      *
-     * @param   RenderInterface $render_adapter
+     * @param  RenderInterface $render_adapter
      *
-     * @since   1.0
+     * @since  1.0
      */
     public function __construct(
         RenderInterface $render_adapter
@@ -44,19 +44,18 @@ class Driver implements RenderInterface
     }
 
     /**
-     * Render output for specified view and data
+     * Render output for specified file and data
      *
-     * @param   string $include_file
+     * @param   string $include_path
      * @param   array  $data
      *
      * @return  string
      * @since   1.0
-     * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function render($include_file, array $data = array())
+    public function renderOutput($include_path, array $data = array())
     {
         try {
-            return $this->render_adapter->render($include_file, $data);
+            return $this->render_adapter->renderOutput($include_path, $data);
 
         } catch (Exception $e) {
             throw new RuntimeException
