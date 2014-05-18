@@ -33,7 +33,7 @@ class Driver implements RenderInterface
     /**
      * Class Constructor
      *
-     * @param  RenderInterface $render_adapter
+     * @param  RenderInterface  $render_adapter
      *
      * @since  1.0
      */
@@ -58,10 +58,8 @@ class Driver implements RenderInterface
             return $this->render_adapter->renderOutput($include_path, $data);
 
         } catch (Exception $e) {
-            throw new RuntimeException
-            (
-                'Render Driver render Method Failed: ' . $e->getMessage()
-            );
+
+            throw new RuntimeException('Render Driver render Method Failed: ' . $e->getMessage());
         }
     }
 }

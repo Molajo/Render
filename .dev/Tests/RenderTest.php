@@ -13,6 +13,7 @@ use Molajo\Render\Adapter\Molajito;
 use Molajo\Render\Adapter\Mustache;
 use Molajo\Render\Adapter\Twig;
 use Molajo\Render\Driver;
+use Exception;
 
 /**
  * Render Test
@@ -78,6 +79,25 @@ class MolajitoTest extends \PHPUnit_Framework_TestCase
 
         return $this;
     }
+
+    /**
+     * @expectedException        \CommonApi\Exception\RuntimeException
+     * @expectedExceptionMessage Render Driver render Method Failed: Boom.
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    public function testRenderOutputException()
+    {
+        $instance = new Driver(new Twig(new MockRender));
+
+        $file  = 'xxx.php';
+        $data  = array();
+        $stuff = $instance->renderOutput($file, $data);
+        $this->assertEquals('stuff', $stuff);
+
+        return $this;
+    }
 }
 
 class MockRender implements RenderInterface
@@ -93,6 +113,9 @@ class MockRender implements RenderInterface
      */
     public function renderOutput($include_path, array $data = array())
     {
+        if ($include_path === 'xxx.php') {
+            throw new Exception('Boom.');
+        }
         return 'stuff';
     }
 }
