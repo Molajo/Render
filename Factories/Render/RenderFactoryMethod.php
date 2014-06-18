@@ -12,7 +12,7 @@ use Exception;
 use CommonApi\Exception\RuntimeException;
 use CommonApi\IoC\FactoryBatchInterface;
 use CommonApi\IoC\FactoryInterface;
-use Molajo\IoC\FactoryMethodBase;
+use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
 
 /**
  * Render Factory Method
@@ -47,7 +47,7 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      * @since   1.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
-    public function setDependencies(array $reflection = null)
+    public function setDependencies(array $reflection = array())
     {
         $this->reflection     = array();
         $this->dependencies   = array();
