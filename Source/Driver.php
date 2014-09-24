@@ -33,7 +33,7 @@ class Driver implements RenderInterface
     /**
      * Class Constructor
      *
-     * @param  RenderInterface  $render_adapter
+     * @param  RenderInterface $render_adapter
      *
      * @since  1.0
      */

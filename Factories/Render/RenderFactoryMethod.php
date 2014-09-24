@@ -34,7 +34,6 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
     public function __construct(array $options = array())
     {
         $options['product_name']             = basename(__DIR__);
-        $options['store_instance_indicator'] = true;
         $options['product_namespace']        = 'Molajo\\Render\\Driver';
 
         parent::__construct($options);
@@ -52,9 +51,10 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
         $this->reflection     = array();
         $this->dependencies   = array();
         $options              = array();
-        $options['base_path'] = $this->options['base_path'];
+        $options['base_path'] = $this->base_path;
 
-        $this->dependencies['Molajito'] = $options;
+        $this->dependencies['Molajito']    = $options;
+        $this->dependencies['Runtimedata'] = array();
 
         return $this->dependencies;
     }
@@ -76,11 +76,31 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
             $this->product_result = new $class($adapter);
 
         } catch (Exception $e) {
-            throw new RuntimeException
-            (
+            throw new RuntimeException(
                 'Render: Could not instantiate Adapter: ' . $class
             );
         }
+
+        return $this;
+    }
+
+    /**
+     * Set Extension Data for Resource
+     *
+     * @return  $this
+     * @since   1.0
+     */
+    public function onAfterInstantiation()
+    {
+        $name         = $this->dependencies['Runtimedata']->resource->extensions->theme->title;
+        $include_path = $this->dependencies['Runtimedata']->resource->extensions->theme->path;
+
+        $data                 = array();
+        $data['name']         = $name;
+        $data['include_path'] = $include_path;
+        $data['runtime_data'] = $this->dependencies['Runtimedata'];
+
+        $this->product_result = $this->product_result->renderOutput($include_path, $data);
 
         return $this;
     }
@@ -105,5 +125,18 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
                 'Render: Could not instantiate Molajito Adapter: ' . $class
             );
         }
+    }
+
+    /**
+     * Factory Method Controller requests any Products (other than the current product) to be saved
+     *
+     * @return  array
+     * @since   1.0
+     */
+    public function setContainerEntries()
+    {
+        $this->set_container_entries['rendered_page'] = $this->product_result;
+
+        return $this->set_container_entries;
     }
 }

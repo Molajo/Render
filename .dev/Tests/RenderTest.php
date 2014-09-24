@@ -85,7 +85,7 @@ class MolajitoTest extends \PHPUnit_Framework_TestCase
      * @expectedExceptionMessage Render Driver render Method Failed: Boom.
      *
      * @return  $this
-     * @since   1.0
+     * @since                    1.0
      */
     public function testRenderOutputException()
     {
