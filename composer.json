@@ -3,7 +3,11 @@
     "description": "Molajo Rendering for PHP Applications",
     "version": "0.2.0",
     "type": "molajo-package",
-    "keywords": ["render", "commonapi", "molajo"],
+    "keywords": [
+        "render",
+        "commonapi",
+        "molajo"
+    ],
     "homepage": "http://github.com/Molajo/Render",
     "license": "MIT",
     "authors": [

@@ -3,7 +3,7 @@
  * Proxy Class for Render Engine Adapters
  *
  * @package    Molajo
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  */
 namespace Molajo\Render;
@@ -16,7 +16,7 @@ use Exception;
  * Proxy Class for Render Engine Adapters
  *
  * @package    Molajo
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
  * @since      1.0.0
  */
@@ -46,16 +46,15 @@ class Driver implements RenderInterface
     /**
      * Render output for specified file and data
      *
-     * @param   string $include_path
      * @param   array  $data
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      */
-    public function renderOutput($include_path, array $data = array())
+    public function renderOutput(array $data = array())
     {
         try {
-            return $this->render_adapter->renderOutput($include_path, $data);
+            return $this->render_adapter->renderOutput($data);
 
         } catch (Exception $e) {
 

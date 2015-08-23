@@ -4,7 +4,7 @@
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  */
 namespace Molajo\Factories\Render;
 
@@ -19,10 +19,10 @@ use Molajo\IoC\FactoryMethod\Base as FactoryMethodBase;
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
-class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
+final class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface, FactoryBatchInterface
 {
     /**
      * Constructor
@@ -33,8 +33,8 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      */
     public function __construct(array $options = array())
     {
-        $options['product_name']             = basename(__DIR__);
-        $options['product_namespace']        = 'Molajo\\Render\\Driver';
+        $options['product_name']      = basename(__DIR__);
+        $options['product_namespace'] = 'Molajo\\Render\\Driver';
 
         parent::__construct($options);
     }
@@ -43,17 +43,14 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      * Instantiate a new adapter and inject it into the Adapter for the FactoryInterface
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function setDependencies(array $reflection = array())
     {
-        $this->reflection     = array();
-        $this->dependencies   = array();
-        $options              = array();
-        $options['base_path'] = $this->base_path;
-
-        $this->dependencies['Molajito']    = $options;
+        $this->reflection                  = array();
+        $this->dependencies                = array();
+        $this->dependencies['Molajito']    = array();
         $this->dependencies['Runtimedata'] = array();
 
         return $this->dependencies;
@@ -63,21 +60,19 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      * Instantiate Class
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function instantiateClass()
     {
         $adapter = $this->getMolajitoAdapter();
 
-        $class = $this->product_namespace;
-
         try {
-            $this->product_result = new $class($adapter);
+            $this->product_result = new $this->product_namespace($adapter);
 
         } catch (Exception $e) {
             throw new RuntimeException(
-                'Render: Could not instantiate Adapter: ' . $class
+                'Render: Could not instantiate Adapter: ' . $this->product_namespace
             );
         }
 
@@ -88,7 +83,7 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      * Set Extension Data for Resource
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function onAfterInstantiation()
     {
@@ -97,10 +92,11 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
 
         $data                 = array();
         $data['name']         = $name;
+        $data['type']         = 'theme';
         $data['include_path'] = $include_path;
-        $data['runtime_data'] = $this->dependencies['Runtimedata'];
+        $data['page']         = $this->dependencies['Runtimedata']->resource->extensions->page->title;
 
-        $this->product_result = $this->product_result->renderOutput($include_path, $data);
+        $this->product_result = $this->product_result->renderOutput($data);
 
         return $this;
     }
@@ -109,7 +105,7 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      * Instantiate Molajito Adapter
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      * @throws  \CommonApi\Exception\RuntimeException
      */
     public function getMolajitoAdapter()
@@ -131,7 +127,7 @@ class RenderFactoryMethod extends FactoryMethodBase implements FactoryInterface,
      * Factory Method Controller requests any Products (other than the current product) to be saved
      *
      * @return  array
-     * @since   1.0
+     * @since   1.0.0
      */
     public function setContainerEntries()
     {

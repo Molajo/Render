@@ -4,7 +4,7 @@
  *
  * @package    Molajo
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  */
 namespace Molajo\Render\Test;
 
@@ -20,7 +20,7 @@ use Exception;
  *
  * @author     Amy Stephen
  * @license    http://www.opensource.org/licenses/mit-license.html MIT License
- * @copyright  2014 Amy Stephen. All rights reserved.
+ * @copyright  2014-2015 Amy Stephen. All rights reserved.
  * @since      1.0.0
  */
 class MolajitoTest extends \PHPUnit_Framework_TestCase
@@ -29,7 +29,7 @@ class MolajitoTest extends \PHPUnit_Framework_TestCase
      * Test Molajito Renderer
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function testMolajito()
     {
@@ -48,7 +48,7 @@ class MolajitoTest extends \PHPUnit_Framework_TestCase
      * Test Mustache Renderer
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function testMustache()
     {
@@ -66,7 +66,7 @@ class MolajitoTest extends \PHPUnit_Framework_TestCase
      * Test Twig Renderer
      *
      * @return  $this
-     * @since   1.0
+     * @since   1.0.0
      */
     public function testTwig()
     {
@@ -109,7 +109,7 @@ class MockRender implements RenderInterface
      * @param   array  $data
      *
      * @return  string
-     * @since   1.0
+     * @since   1.0.0
      */
     public function renderOutput($include_path, array $data = array())
     {
